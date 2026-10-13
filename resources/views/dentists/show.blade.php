@@ -1,0 +1,8 @@
+@extends('layouts.app')
+@section('title', $dentist->name)
+@section('content')
+<div class="d-flex justify-content-between align-items-center mb-4"><div><a href="{{ route('dentists.index') }}" class="small text-decoration-none">← Dentists</a><h1 class="h2 mt-2 mb-0">{{ $dentist->name }}</h1></div><a href="{{ route('dentists.edit', $dentist) }}" class="btn btn-warning">Edit dentist</a></div>
+<div class="card border-0 shadow-sm mb-4"><div class="card-header bg-white"><h2 class="h5 mb-0">Dentist information</h2></div><div class="card-body row g-3"><div class="col-md-4"><div class="small text-secondary">Specialization</div>{{ $dentist->specialization }}</div><div class="col-md-4"><div class="small text-secondary">Email</div>{{ $dentist->email }}</div><div class="col-md-4"><div class="small text-secondary">Phone</div>{{ $dentist->phone }}</div></div></div>
+<div class="card border-0 shadow-sm"><div class="card-header bg-white"><h2 class="h5 mb-0">Appointments</h2></div><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead class="table-light"><tr><th>Date</th><th>Patient</th><th>Reason</th><th>Status</th></tr></thead><tbody>@forelse($dentist->appointments as $appointment)<tr><td><a href="{{ route('appointments.show', $appointment) }}">{{ $appointment->appointment_date->format('M j, Y · g:i A') }}</a></td><td>{{ $appointment->patient->full_name }}</td><td>{{ $appointment->reason ?? '—' }}</td><td>{{ $appointment->status }}</td></tr>@empty<tr><td colspan="4" class="text-center text-secondary py-4">No appointments recorded.</td></tr>@endforelse</tbody></table></div></div>
+@endsection
+

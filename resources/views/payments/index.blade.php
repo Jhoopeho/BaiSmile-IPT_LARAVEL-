@@ -1,0 +1,9 @@
+@extends('layouts.app')
+@section('title', 'Payments')
+@section('content')
+<div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4"><div><h1 class="h2 mb-1">Payments</h1><p class="text-secondary mb-0">Record and review payments against treatments.</p></div><a href="{{ route('payments.create') }}" class="btn btn-primary">+ Record payment</a></div>
+<div class="card border-0 shadow-sm"><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead class="table-light"><tr><th>Date</th><th>Patient</th><th>Treatment</th><th>Method</th><th>Status</th><th>Amount</th><th class="text-end">Actions</th></tr></thead><tbody>
+    @forelse($payments as $payment)<tr><td>{{ $payment->payment_date->format('M j, Y') }}</td><td>{{ $payment->treatment->appointment->patient->full_name }}</td><td><a href="{{ route('treatments.show', $payment->treatment) }}">{{ $payment->treatment->name }}</a></td><td>{{ $payment->method }}</td><td><span class="badge {{ $payment->status === 'Paid' ? 'text-bg-success' : ($payment->status === 'Partial' ? 'text-bg-warning' : 'text-bg-secondary') }}">{{ $payment->status }}</span></td><td class="fw-semibold">₱{{ number_format((float) $payment->amount, 2) }}</td><td class="text-end text-nowrap"><a href="{{ route('payments.show', $payment) }}" class="btn btn-sm btn-outline-secondary">View</a> <a href="{{ route('payments.edit', $payment) }}" class="btn btn-warning btn-sm">Edit</a> <form action="{{ route('payments.destroy', $payment) }}" method="POST" class="d-inline">@csrf @method('DELETE')<button class="btn btn-danger btn-sm" onclick="return confirm('Delete this payment?')">Delete</button></form></td></tr>@empty<tr><td colspan="7" class="text-center text-secondary py-5">No payments recorded yet.</td></tr>@endforelse
+</tbody></table></div></div>
+@endsection
+
